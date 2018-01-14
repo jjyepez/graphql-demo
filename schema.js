@@ -19,7 +19,7 @@ const typeDefs = `
     id          : ID!
     titulo      : String!
     descripcion : String!
-    profesor    : [Profesor]
+    profesor    : Profesor
     rating      : Float @deprecated (reason: "Ya no se usa")
     comentarios : [Comentario]
   }
@@ -43,8 +43,35 @@ const typeDefs = `
   }
 `
 
+const resolvers = {
+  Query: {
+    cursos: () => {
+      return [
+        {
+          id         :1,
+          titulo     :'GraphQL',
+          descripcion:'Aprendidndo GraphQL',
+        },
+        {
+          id         :2,
+          titulo     :'PHP',
+          descripcion:'Aprendidndo PHP'
+        }
+      ]
+    }
+  },
+  Curso: {
+    profesor: () => {
+      return {
+        nombre: 'Paula'
+      }
+    }
+  }
+}
+
 const schema = makeExecutableSchema({
-  typeDefs: typeDefs
+  typeDefs : typeDefs,
+  resolvers: resolvers
 })
 
 module.exports = schema
