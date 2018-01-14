@@ -63,10 +63,19 @@ const resolvers = {
   Curso: {
     profesor: () => {
       return {
-        nombre: 'Paula'
+        nombre: 'Paula',
+        nacionalidad: 'Colombia'
       }
+    },
+    comentarios: () => {
+      return [
+        {
+          nombre: 'Pedro',
+          cuerpo: '¡Buen video!'
+        }
+      ]
     }
-  }
+  },
 }
 
 const schema = makeExecutableSchema({
