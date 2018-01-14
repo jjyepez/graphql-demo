@@ -1,7 +1,12 @@
 
 // --- definición del esquema según las especificaciones de GraphQL
 
-const { makeExecutableSchema } = require('graphql-tools')
+const {
+  makeExecutableSchema,
+  addMockFunctionsToSchema
+} = require('graphql-tools')
+
+const casual = require('casual')
 
 // --- Definición del Schema GraphQL
 // --- obligatoriamente debe existir un type llamado Query (root) en el schema
@@ -64,7 +69,6 @@ const resolvers = {
     profesor: () => {
       return {
         nombre: 'Paula',
-        nacionalidad: 'Colombia'
       }
     },
     comentarios: () => {
@@ -81,6 +85,22 @@ const resolvers = {
 const schema = makeExecutableSchema({
   typeDefs : typeDefs,
   resolvers: resolvers
+})
+
+addMockFunctionsToSchema({
+  schema: schema,
+  mocks : {
+    Curso: () => ({
+      id         : casual.uuid,
+      titulo     : casual.sentence,
+      descripcion: casual.sentences(2)
+    }),
+    Profesor: () => ({
+      nombre      : casual.name,
+      nacionalidad: casual.country
+    })
+  },
+  preserveResolvers: true
 })
 
 module.exports = schema
