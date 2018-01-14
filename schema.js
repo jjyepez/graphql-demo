@@ -20,7 +20,7 @@ const typeDefs = `
     titulo      : String!
     descripcion : String!
     profesor    : [Profesor]
-    rating      : Float
+    rating      : Float @deprecated (reason: "Ya no se usa")
     comentarios : [Comentario]
   }
 
