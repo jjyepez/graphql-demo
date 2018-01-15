@@ -19,8 +19,13 @@ const rootQuery = `
   type Query {
     cursos     : [Curso]
     profesores : [Profesor]
-    curso   ( id: Int ): Curso
-    profesor( id: Int ): Profesor
+    curso      ( id: Int ): Curso
+    profesor   ( id: Int ): Profesor
+  }
+
+  # --- Mutaciones .. permiten modificar los datos
+  type Mutation {
+    profesorAdd( profesor: NuevoProfesor ): Profesor
   }
 `
 

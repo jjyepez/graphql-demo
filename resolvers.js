@@ -25,6 +25,11 @@ const resolvers = {
     }
   }
   */
+  Mutation: {
+    profesorAdd: ( _, args ) => {
+      return Profesor.query().insert( args.profesor )
+    }
+  }
 }
 
 module.exports = resolvers
