@@ -25,7 +25,8 @@ const rootQuery = `
 
   # --- Mutaciones .. permiten modificar los datos
   type Mutation {
-    profesorAdd( profesor: NuevoProfesor ): Profesor
+    profesorAdd ( profesor  : NuevoProfesor ): Profesor
+    profesorEdit( profesorId: Int!, profesor : ProfesorEditable ): Profesor
   }
 `
 

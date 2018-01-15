@@ -26,9 +26,8 @@ const resolvers = {
   }
   */
   Mutation: {
-    profesorAdd: ( _, args ) => {
-      return Profesor.query().insert( args.profesor )
-    }
+    profesorAdd : ( _, args ) => Profesor.query().insert( args.profesor ),
+    profesorEdit: ( _, args ) => Profesor.query().patchAndFetchById( args.profesorId, args.profesor ),
   }
 }
 

@@ -13,8 +13,14 @@ module.exports = `
   }
 
   input NuevoProfesor {
-    nombre: String!,
-    genero: Genero,
+    nombre: String!
+    genero: Genero
     nacionalidad: String!
+  }
+
+  input ProfesorEditable {
+    nombre: String
+    genero: Genero
+    nacionalidad: String
   }
 `
