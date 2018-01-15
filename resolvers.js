@@ -9,28 +9,34 @@ const resolvers = {
     profesores: () => Profesor.query().eager('cursos'),
 
     curso     : ( rootValue, args ) => Curso.query().eager('[profesor, profesor.[cursos], comentarios]').findById( args.id ),
-    profesor  : ( rootValue, args ) => Profesor.query().eager('cursos').findById( args.id )
-  },
-  /*
-  // --- resuelve esta consulta ---- !
-  {
-    curso (id:2) {
-      titulo
-      profesor {
-        nombre
-        cursos {
-          titulo
-        }
-      }
+    profesor  : ( rootValue, args ) => Profesor.query().eager('cursos').findById( args.id ),
+
+    buscar    : ( _, args ) => {
+      return [
+        Profesor.query().findById(1),
+        Curso   .query().findById(1)
+      ]
     }
-  }
-  */
+  },
+  ResultadoBusqueda: {
+    __resolveType: obj => {
+      // --- console.log( obj ) // --- salida en consola Terminal / NodeJS - no en navegador
+      return obj.nombre ? 'Profesor' : 'Curso'
+    }
+  },
   Mutation: {
     profesorAdd   : ( _, args ) => Profesor.query().insert( args.profesor ),
     profesorEdit  : ( _, args ) => Profesor.query().patchAndFetchById( args.profesorId, args.profesor ),
     profesorDelete: ( _, args ) => {
       return Profesor.query().findById( args.profesorId ).then( profesor => {
         return Profesor.query().deleteById( args.profesorId ).then( () => profesor )
+      })
+    },
+    cursoAdd   : ( _, args ) => Curso.query().insert( args.curso ),
+    cursoEdit  : ( _, args ) => Curso.query().patchAndFetchById( args.cursoId, args.curso ),
+    cursoDelete: ( _, args ) => {
+      return Curso.query().findById( args.cursoId ).then( curso => {
+        return Curso.query().deleteById( args.cursoId ).then( () => curso )
       })
     }
   }
