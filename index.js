@@ -7,6 +7,8 @@ const {
 } = require('apollo-server-express')
 const schema     = require('./schema')
 
+require('./db/setup')
+
 const app = express()
 
 app.use( // --- use para implementar los middlewares como graphqlExpress

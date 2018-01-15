@@ -8,6 +8,9 @@ const {
 
 const casual = require('casual')
 
+const Curso = require('./models/Curso')
+const Profesor = require('./models/Profesor')
+
 // --- Definición del Schema GraphQL
 // --- obligatoriamente debe existir un type llamado Query (root) en el schema
 const typeDefs = `
@@ -34,6 +37,7 @@ const typeDefs = `
     nombre      : String!
     nacionalidad: String!
     genero      : Genero
+    cursos      : [Curso]
   }
 
   enum Genero {
@@ -50,57 +54,32 @@ const typeDefs = `
 
 const resolvers = {
   Query: {
-    cursos: () => {
-      return [
-        {
-          id         :1,
-          titulo     :'GraphQL',
-          descripcion:'Aprendidndo GraphQL',
-        },
-        {
-          id         :2,
-          titulo     :'PHP',
-          descripcion:'Aprendidndo PHP'
-        }
-      ]
-    }
+    // --- eager establece relacion tipo join en funcion a lo que se definio en el modelo
+    cursos    : () => Curso.query().eager('[profesor, profesor.[cursos], comentarios]'),
+    profesores: () => Profesor.query().eager('cursos'),
+
+    curso     : ( rootValue, args ) => Curso.query().eager('[profesor, profesor.[cursos], comentarios]').findById( args.id ),
+    profesor  : ( rootValue, args ) => Profesor.query().eager('cursos').findById( args.id )
   },
-  Curso: {
-    profesor: () => {
-      return {
-        nombre: 'Paula',
+  /*
+  // --- resuleve esta consulta ---- !
+  {
+    curso (id:2) {
+      titulo
+      profesor {
+        nombre
+        cursos {
+          titulo
+        }
       }
-    },
-    comentarios: () => {
-      return [
-        {
-          nombre: 'Pedro',
-          cuerpo: '¡Buen video!'
-        }
-      ]
     }
-  },
+  }
+  */
 }
 
 const schema = makeExecutableSchema({
   typeDefs : typeDefs,
   resolvers: resolvers
-})
-
-addMockFunctionsToSchema({
-  schema: schema,
-  mocks : {
-    Curso: () => ({
-      id         : casual.uuid,
-      titulo     : casual.sentence,
-      descripcion: casual.sentences(2)
-    }),
-    Profesor: () => ({
-      nombre      : casual.name,
-      nacionalidad: casual.country
-    })
-  },
-  preserveResolvers: true
 })
 
 module.exports = schema
