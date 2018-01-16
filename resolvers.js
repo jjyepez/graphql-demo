@@ -36,7 +36,12 @@ const resolvers = {
     cursoEdit  : ( _, args ) => Curso.query().patchAndFetchById( args.cursoId, args.curso ),
     cursoDelete: ( _, args ) => {
       return Curso.query().findById( args.cursoId ).then( curso => {
-        return Curso.query().deleteById( args.cursoId ).then( () => curso )
+        return Curso.query().deleteById( args.cursoId )
+          .then( ( filasBorradas ) => {
+            if( filasBorradas > 0 ) return curso
+            throw new Error(`No fue posible eliminar el Curso con el id: ${args.cursoId}`)
+          }
+        )
       })
     }
   }

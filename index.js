@@ -14,7 +14,16 @@ const app = express()
 app.use( // --- use para implementar los middlewares como graphqlExpress
   '/graphql', // --- se define un punto de acceso ( endpoint o ruta )
   bodyParser.json(),
-  graphqlExpress({ schema: schema })
+  graphqlExpress({
+    schema: schema,
+    formatError: ( error ) => {
+      return {
+        codigo : '901',
+        detalle: error.name,
+        mensaje: error.message
+      }
+    }
+  })
 )
 
 app.use(

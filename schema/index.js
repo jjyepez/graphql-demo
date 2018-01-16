@@ -26,6 +26,7 @@ const rootQuery = `
     buscar     ( query: String! ): [ ResultadoBusqueda ]
   }
 
+  # --- Union permite devolver resultados de diferentes identidades en la misma respuesta
   union ResultadoBusqueda = Profesor | Curso
 
   # --- Mutaciones .. permiten modificar los datos
